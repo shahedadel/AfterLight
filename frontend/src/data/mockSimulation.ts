@@ -1,0 +1,152 @@
+import type {
+  CommunicationLink,
+  CommunicationNode,
+  SimulationState,
+} from '../types/simulation'
+
+export const initialNodes: CommunicationNode[] = [
+  {
+    id: 'house_a',
+    name: 'House A',
+    battery: 72,
+    status: 'alive',
+    resources: ['Food reserve'],
+    responsibilities: ['Report neighborhood conditions'],
+    capabilities: ['Local communication'],
+    queue: [],
+    position: { x: 100, y: 150 },
+  },
+  {
+    id: 'school',
+    name: 'School',
+    battery: 66,
+    status: 'alive',
+    resources: ['Indoor shelter', 'Emergency radio'],
+    responsibilities: ['Relay messages'],
+    capabilities: ['Network relay'],
+    queue: [],
+    position: { x: 325, y: 105 },
+  },
+  {
+    id: 'hospital',
+    name: 'Hospital',
+    battery: 84,
+    status: 'alive',
+    resources: ['Emergency care', 'Medicine'],
+    responsibilities: ['Receive medical requests'],
+    capabilities: ['Medical care', 'Medical relay'],
+    queue: [],
+    position: { x: 575, y: 150 },
+  },
+  {
+    id: 'house_b',
+    name: 'House B',
+    battery: 45,
+    status: 'alive',
+    resources: ['Water reserve'],
+    responsibilities: ['Report neighborhood conditions'],
+    capabilities: ['Local communication'],
+    queue: [
+      {
+        id: 'message-insulin',
+        origin: 'house_b',
+        destination: 'hospital',
+        category: 'medical',
+        text: 'Insulin required',
+        severity: 'critical',
+        ageMinutes: 32,
+        peopleAffected: 1,
+        duplicate: false,
+      },
+    ],
+    position: { x: 100, y: 405 },
+  },
+  {
+    id: 'fire_station',
+    name: 'Fire Station',
+    battery: 83,
+    status: 'alive',
+    resources: ['First aid', 'Rescue equipment'],
+    responsibilities: ['Emergency response'],
+    capabilities: ['Medical support', 'Rescue', 'Network relay'],
+    queue: [],
+    position: { x: 345, y: 410 },
+  },
+  {
+    id: 'shelter',
+    name: 'Shelter',
+    battery: 58,
+    status: 'alive',
+    resources: ['Food', 'Beds', 'Drinking water'],
+    responsibilities: ['Receive shelter requests'],
+    capabilities: ['Shelter coordination', 'Network relay'],
+    queue: [],
+    position: { x: 590, y: 405 },
+  },
+]
+
+export const initialLinks: CommunicationLink[] = [
+  {
+    id: 'house_a--school',
+    source: 'house_a',
+    target: 'school',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'school--hospital',
+    source: 'school',
+    target: 'hospital',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'house_a--house_b',
+    source: 'house_a',
+    target: 'house_b',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'house_b--fire_station',
+    source: 'house_b',
+    target: 'fire_station',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'fire_station--hospital',
+    source: 'fire_station',
+    target: 'hospital',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'school--shelter',
+    source: 'school',
+    target: 'shelter',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'shelter--fire_station',
+    source: 'shelter',
+    target: 'fire_station',
+    status: 'active',
+    cost: 1,
+  },
+  {
+    id: 'house_b--shelter',
+    source: 'house_b',
+    target: 'shelter',
+    status: 'active',
+    cost: 1,
+  },
+]
+
+export function createInitialSimulation(): SimulationState {
+  return structuredClone({
+    nodes: initialNodes,
+    links: initialLinks,
+  })
+}
