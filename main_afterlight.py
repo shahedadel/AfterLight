@@ -165,6 +165,8 @@ def fail_node(node):
 
         print()
 
+# Test failure
+fail_node("Fire Station 2")
 
 # Draw graph
 pos = nx.spring_layout(G, seed=42)
