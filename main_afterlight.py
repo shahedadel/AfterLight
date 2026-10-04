@@ -118,6 +118,7 @@ def utilization(node):
         return 0
 
     return load / capacity
+
 def score_candidates(capability, failed_node):
     candidates = get_candidate_info(capability, failed_node)
 
