@@ -1,14 +1,24 @@
-export type NodeStatus = 'alive' | 'dead'
+export type NodeStatus = 'online' | 'offline'
 
-export interface CommunicationNode {
+export type NodeType =
+  | 'hospital'
+  | 'fire_station'
+  | 'shelter'
+  | 'school'
+  | 'residential'
+  | 'relay'
+
+export interface InfrastructureNode {
   id: string
   name: string
-  battery: number
+  type: NodeType
+
+  capacity: number
+  load: number
   status: NodeStatus
-  resources: string[]
-  responsibilities: string[]
+
   capabilities: string[]
-  queue: EmergencyMessage[]
+
   position: {
     x: number
     y: number
@@ -17,7 +27,7 @@ export interface CommunicationNode {
 
 export type LinkStatus = 'active' | 'broken'
 
-export interface CommunicationLink {
+export interface InfrastructureLink {
   id: string
   source: string
   target: string
@@ -25,23 +35,24 @@ export interface CommunicationLink {
   cost: number
 }
 
-export type MessageSeverity = 'low' | 'medium' | 'high' | 'critical'
-
-export interface EmergencyMessage {
-  id: string
-  origin: string
-  destination: string
-  category: string
-  text: string
-  severity: MessageSeverity
-  ageMinutes: number
-  peopleAffected: number
-  duplicate: boolean
+export interface SimulationState {
+  nodes: InfrastructureNode[]
+  links: InfrastructureLink[]
 }
 
-export interface SimulationState {
-  nodes: CommunicationNode[]
-  links: CommunicationLink[]
+export interface CandidateResult {
+  nodeId: string
+  nodeName: string
+  availableCapacity: number
+  distance: number
+  score: number
+}
+
+export interface CapabilityTransfer {
+  capability: string
+  failedNodeId: string
+  candidates: CandidateResult[]
+  assignedTo: string | null
 }
 
 export interface EventEntry {
